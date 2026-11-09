@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ledgerline.DbMigrator\Ledgerline.DbMigrator.csproj" />
+    <ProjectReference Include="..\..\src\Ledgerline.Domain\Ledgerline.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

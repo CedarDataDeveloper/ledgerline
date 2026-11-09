@@ -21,7 +21,8 @@ no real personal or financial data anywhere in this repository.
 | --- | --- | --- |
 | LL-001 | Repository scaffold, solution structure, setup script | Implemented |
 | LL-002 | DbUp migration runner, database schemas, SET options for indexed views | Implemented |
-| LL-003 to LL-015 | The bank, the pipeline, the warehouse, the report | Planned |
+| LL-003 | Core and pii tables, token vault, constraints, synthetic IBAN generator with mod-97 | Implemented |
+| LL-004 to LL-015 | The bank, the pipeline, the warehouse, the report | Planned |
 
 The full ticket list is in section 17 of the technical blueprint.
 
