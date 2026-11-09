@@ -2,7 +2,7 @@ using Ledgerline.Domain;
 
 namespace Ledgerline.Db.Tests;
 
-// The IBAN check must not depend on the server's collation. This server uses
+// The IBAN check and the ledger must not depend on the server's collation. This server uses
 // SQL_Latin1_General_CP1_CI_AS; many others use a Windows collation, under
 // which LIKE '[0-9]' also matches characters such as the superscript two (²).
 // Each test here gets its own database created with a Windows collation, then
@@ -24,6 +24,26 @@ public class WindowsCollationTests : IAsyncLifetime
 
         var customerId = await _db.InsertCustomerAsync();
         await _db.OpenAccountAsync(customerId, "SAVINGS_AED");
+    }
+
+    // The ledger under a Windows collation: a balanced journal posts, and a
+    // repeat of its key returns the same journal.
+    [Fact]
+    public async Task A_journal_posts_and_a_repeat_of_its_key_returns_the_same_id()
+    {
+        Assert.Equal(WindowsCollation, await _db.DatabaseCollationAsync());
+        await _db.EnsureOpenBusinessDateAsync();
+
+        var cash = await _db.GlLedgerAccountIdAsync("1010");
+        var customer = await _db.NewCustomerLedgerAccountAsync();
+        var key = BankCoreDatabase.NewKey();
+        JournalLine[] lines = [new JournalLine(cash, 80.00m), new JournalLine(customer, -80.00m)];
+
+        var first = await _db.PostJournalAsync(key, "SALARY_CREDIT", lines);
+        var second = await _db.PostJournalAsync(key, "SALARY_CREDIT", lines);
+
+        Assert.Equal(first, second);
+        Assert.Equal(80.00m, await _db.CustomerBalanceAsync(customer));
     }
 
     [Fact]

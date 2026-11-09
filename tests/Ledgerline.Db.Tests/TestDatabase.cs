@@ -36,6 +36,13 @@ public sealed class TestDatabase
         await ExecuteInMasterAsync($"CREATE DATABASE [{Name}]{collate};");
     }
 
+    // Turns on read committed snapshot, the default on Azure SQL and Fabric:
+    // plain reads see the last committed version instead of waiting for
+    // locks. ROLLBACK IMMEDIATE ends any session still connected, because
+    // the setting can only change when the database has no other users.
+    public Task SetReadCommittedSnapshotOnAsync() =>
+        ExecuteInMasterAsync($"ALTER DATABASE [{Name}] SET READ_COMMITTED_SNAPSHOT ON WITH ROLLBACK IMMEDIATE;");
+
     // Safe to call whether or not the database was ever created.
     public async Task DropAsync()
     {

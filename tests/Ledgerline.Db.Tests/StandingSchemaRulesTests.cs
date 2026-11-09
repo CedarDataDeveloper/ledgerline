@@ -5,11 +5,12 @@ namespace Ledgerline.Db.Tests;
 // scripts, so a future table that breaks a rule fails here.
 public class StandingSchemaRulesTests(BankCoreDatabase db) : IClassFixture<BankCoreDatabase>
 {
-    // Every user-table column as schema.table.column, with its type name.
-    // TYPE_NAME(system_type_id) sees through alias types to the base type.
+    // Every user-table column as schema.table.column, with its type name and
+    // scale. TYPE_NAME(system_type_id) sees through alias types to the base
+    // type.
     private const string ColumnsSql =
         """
-        SELECT s.name + '.' + t.name + '.' + c.name + '|' + TYPE_NAME(c.system_type_id)
+        SELECT s.name + '.' + t.name + '.' + c.name + '|' + TYPE_NAME(c.system_type_id) + '|' + CAST(c.scale AS varchar(3))
         FROM sys.columns AS c
         JOIN sys.tables  AS t ON t.object_id = c.object_id
         JOIN sys.schemas AS s ON s.schema_id = t.schema_id
@@ -72,7 +73,35 @@ public class StandingSchemaRulesTests(BankCoreDatabase db) : IClassFixture<BankC
         Assert.Empty(offending);
     }
 
-    private sealed record ColumnInfo(string Schema, string Column, string FullName, string Type);
+    // Timestamps are UTC datetime2(3) in columns ending _utc (CLAUDE.md
+    // non-negotiables, blueprint 7.5). The older datetime and smalldatetime
+    // types are never used: they round to 3.33 ms or to the minute.
+    [Fact]
+    public async Task Every_utc_column_is_datetime2_3_and_no_column_uses_datetime()
+    {
+        var columns = await ColumnsAsync();
+
+        var utcColumns = columns
+            .Where(column => column.Column.EndsWith("_utc", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        var wrongUtc = utcColumns
+            .Where(column => column.Type != "datetime2" || column.Scale != 3)
+            .Select(column => $"{column.FullName} ({column.Type}, scale {column.Scale})");
+        Assert.Empty(wrongUtc);
+
+        // DbUp creates dbo.SchemaVersions itself, with a datetime column
+        // named Applied. It is DbUp's table, not part of the bank's schema.
+        var oldTypes = columns
+            .Where(column => column.Type is "datetime" or "smalldatetime")
+            .Where(column => !column.FullName.StartsWith("dbo.SchemaVersions.", StringComparison.Ordinal))
+            .Select(column => $"{column.FullName} ({column.Type})");
+        Assert.Empty(oldTypes);
+
+        // Proves the name matching works: it finds a real _utc column.
+        Assert.Contains("ledger.journal.posted_at_utc", utcColumns.Select(column => column.FullName));
+    }
+
+    private sealed record ColumnInfo(string Schema, string Column, string FullName, string Type, int Scale);
 
     private async Task<List<ColumnInfo>> ColumnsAsync()
     {
@@ -82,7 +111,7 @@ public class StandingSchemaRulesTests(BankCoreDatabase db) : IClassFixture<BankC
         {
             var parts = row.Split('|');
             var name = parts[0].Split('.');
-            return new ColumnInfo(name[0], name[2], parts[0], parts[1]);
+            return new ColumnInfo(name[0], name[2], parts[0], parts[1], int.Parse(parts[2]));
         }).ToList();
     }
 }
