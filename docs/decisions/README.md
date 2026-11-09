@@ -9,4 +9,5 @@ made after the blueprint start at ADR-020.
 
 | ADR | Decision | Status |
 | --- | --- | --- |
+| [010](ADR-010-schema-as-numbered-sql-scripts.md) | Schema as numbered SQL scripts applied by DbUp; EF Core maps only | Accepted |
 | [020](ADR-020-fabric-finish-line-deferred.md) | The Fabric finish line is deferred out of v1 | Accepted |

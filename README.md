@@ -20,7 +20,8 @@ no real personal or financial data anywhere in this repository.
 | Ticket | Scope | State |
 | --- | --- | --- |
 | LL-001 | Repository scaffold, solution structure, setup script | Implemented |
-| LL-002 to LL-015 | The bank, the pipeline, the warehouse, the report | Planned |
+| LL-002 | DbUp migration runner, database schemas, SET options for indexed views | Implemented |
+| LL-003 to LL-015 | The bank, the pipeline, the warehouse, the report | Planned |
 
 The full ticket list is in section 17 of the technical blueprint.
 
@@ -39,13 +40,15 @@ The full ticket list is in section 17 of the technical blueprint.
 ```
 
 The script checks the tools above, creates a Python environment in `.venv`, then
-builds and tests everything. Two options cover machines that differ from the
-defaults:
+builds and tests everything. Before the tests it creates the `BankCore` and
+`Warehouse` databases if they are missing and applies any pending scripts from
+`db/*/migrations`; scripts already applied are skipped. Two options cover
+machines that differ from the defaults:
 
 - `-Python <path>`: the Python 3.12 interpreter to use when `python` on PATH is
   not version 3.12.
-- `-SqlServer <name>`: the instance to test against when it is not the default
-  instance on `localhost`.
+- `-SqlServer <name>`: the instance to migrate and test against when it is not
+  the default instance on `localhost`.
 
 ## Layout
 
