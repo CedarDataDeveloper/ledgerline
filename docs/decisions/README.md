@@ -1,0 +1,12 @@
+# Decision records
+
+One short file per design decision: what was decided, why, and the trade-off
+accepted. Copy `ADR-000-template.md` to start a new one.
+
+ADR-001 to ADR-019 are listed in section 18 of the technical blueprint. Each
+one is written up here as the ticket that implements it is built. Decisions
+made after the blueprint start at ADR-020.
+
+| ADR | Decision | Status |
+| --- | --- | --- |
+| [020](ADR-020-fabric-finish-line-deferred.md) | The Fabric finish line is deferred out of v1 | Accepted |
