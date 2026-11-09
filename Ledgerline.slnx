@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Ledgerline.Api/Ledgerline.Api.csproj" />
+    <Project Path="src/Ledgerline.Application/Ledgerline.Application.csproj" />
+    <Project Path="src/Ledgerline.Domain/Ledgerline.Domain.csproj" />
+    <Project Path="src/Ledgerline.Infrastructure/Ledgerline.Infrastructure.csproj" />
+    <Project Path="src/Ledgerline.Simulator/Ledgerline.Simulator.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Ledgerline.Db.Tests/Ledgerline.Db.Tests.csproj" />
+    <Project Path="tests/Ledgerline.Domain.Tests/Ledgerline.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,9 @@
+# Let git normalise line endings for text files.
+* text=auto
+
+# PowerShell scripts keep Windows line endings.
+*.ps1 text eol=crlf
+
+# Never treat these as text.
+*.pdf binary
+*.pbix binary

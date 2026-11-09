@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ledgerline.Application\Ledgerline.Application.csproj" />
+    <ProjectReference Include="..\Ledgerline.Infrastructure\Ledgerline.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

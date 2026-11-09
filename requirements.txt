@@ -1,0 +1,6 @@
+# Python packages for the generator, the pipeline and dbt.
+# Versions are pinned so every machine installs the same ones.
+dbt-core==1.9.11
+dbt-sqlserver==1.9.2
+pyodbc==5.5.0
+pytest==9.2.0

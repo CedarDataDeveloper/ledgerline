@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The domain has no package or project references. A test in
+       tests/Ledgerline.Domain.Tests fails if one is added. -->
+
+</Project>
