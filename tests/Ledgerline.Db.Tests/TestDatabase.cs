@@ -27,9 +27,13 @@ public sealed class TestDatabase
             ConnectTimeout = 5,
         }.ConnectionString;
 
-    public async Task CreateAsync()
+    // Without a collation the database takes the server's default. A test can
+    // name one, such as Latin1_General_100_CI_AS, to check that the schema
+    // behaves the same on a server whose default differs from this one.
+    public async Task CreateAsync(string? collation = null)
     {
-        await ExecuteInMasterAsync($"CREATE DATABASE [{Name}];");
+        var collate = collation is null ? "" : $" COLLATE {collation}";
+        await ExecuteInMasterAsync($"CREATE DATABASE [{Name}]{collate};");
     }
 
     // Safe to call whether or not the database was ever created.
