@@ -4,11 +4,12 @@
 
 .DESCRIPTION
     Checks the tools Ledgerline needs, creates the Python environment in
-    .venv, then builds and tests everything. Safe to run again at any time.
+    .venv, builds everything, creates or updates the BankCore and Warehouse
+    databases, then runs the tests. Safe to run again at any time.
 
 .PARAMETER SqlServer
-    The SQL Server instance the tests connect to. Defaults to the local
-    default instance.
+    The SQL Server instance the migrations and tests connect to. Defaults to
+    the local default instance.
 
 .PARAMETER Python
     The Python 3.12 interpreter used to create .venv the first time.
@@ -89,13 +90,21 @@ Invoke-Checked 'Installing Python packages' {
 }
 Write-Host 'Python packages match requirements.txt'
 
-# --- 3. Build and test ------------------------------------------------------
+# --- 3. Build, migrate and test ---------------------------------------------
 
 # The .NET and Python tests both read the server name from this variable.
 $env:LEDGERLINE_SQL_SERVER = $SqlServer
 
 Write-Step 'dotnet build'
 Invoke-Checked 'dotnet build' { dotnet build --nologo --verbosity quiet }
+
+# Creates BankCore and Warehouse if they are missing and applies any pending
+# scripts from db\*\migrations. Applied scripts are skipped, so this is safe
+# to run every time.
+Write-Step "database migrations (SQL Server: $SqlServer)"
+Invoke-Checked 'database migrations' {
+    dotnet run --project src/Ledgerline.DbMigrator --no-build -- --server $SqlServer
+}
 
 Write-Step "dotnet test (SQL Server: $SqlServer)"
 Invoke-Checked 'dotnet test' { dotnet test --nologo --no-build }

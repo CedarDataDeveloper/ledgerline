@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/Ledgerline.Api/Ledgerline.Api.csproj" />
     <Project Path="src/Ledgerline.Application/Ledgerline.Application.csproj" />
+    <Project Path="src/Ledgerline.DbMigrator/Ledgerline.DbMigrator.csproj" />
     <Project Path="src/Ledgerline.Domain/Ledgerline.Domain.csproj" />
     <Project Path="src/Ledgerline.Infrastructure/Ledgerline.Infrastructure.csproj" />
     <Project Path="src/Ledgerline.Simulator/Ledgerline.Simulator.csproj" />
