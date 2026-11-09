@@ -1,0 +1,20 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+
+# Local secrets
+.env
