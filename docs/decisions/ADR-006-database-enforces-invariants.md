@@ -30,8 +30,16 @@ What exists after LL-004:
 - Whole fils, non-zero amounts, AED only, and the shape of ledger accounts are
   check constraints.
 
-Still to come: the domain model that enforces the same rules in C# (LL-005);
-the audit event, permissions and `DENY` that make the procedure the only way
+What exists after LL-005: the domain half of these rules (ADR-005).
+`Journal.Create` refuses fewer than two lines and lines that do not net to
+zero in each currency (INV-01); `JournalLine` refuses zero and sub-fils
+amounts; a `Journal` has no way to change once built (INV-02);
+`Account.CheckDebit` refuses closed, then frozen, then not enough money, in
+the procedure's order (INV-04, INV-05); `IdempotencyKey` has the key rules
+(INV-03). `DomainParityTests` checks rounding, the journal type and status
+codes, and the key rules against the database.
+
+Still to come: the audit event, permissions and `DENY` that make the procedure the only way
 in (LL-009); INV-06 and INV-07 with their tables (LL-008, LL-009).
 
 ## Known limits

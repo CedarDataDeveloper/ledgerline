@@ -23,7 +23,8 @@ no real personal or financial data anywhere in this repository.
 | LL-002 | DbUp migration runner, database schemas, SET options for indexed views | Implemented |
 | LL-003 | Core and pii tables, token vault, constraints, synthetic IBAN generator with mod-97 | Implemented |
 | LL-004 | Ledger tables, posting procedure with table-valued parameter, balance trigger, immutability, indexed view | Implemented |
-| LL-005 to LL-015 | The bank, the pipeline, the warehouse, the report | Planned |
+| LL-005 | Domain model (Money, BusinessDate, Account, Journal) with invariant tests | Implemented |
+| LL-006 to LL-015 | The bank, the pipeline, the warehouse, the report | Planned |
 
 The full ticket list is in section 17 of the technical blueprint.
 
