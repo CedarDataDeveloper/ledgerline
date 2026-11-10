@@ -38,6 +38,12 @@ What exists after LL-004:
   at a time. The second waits, finds the first's journal and returns its id.
   The unique constraint stays as the backstop.
 
+What exists after LL-005: the `IdempotencyKey` type in the domain, with the
+same rules as the column and the procedure (1 to 100 characters, no leading
+or trailing whitespace, exact and case-sensitive). `Journal.Create` needs
+one, so a journal cannot be built without a key. `DomainParityTests` checks
+that the keys the type refuses are the keys the procedure refuses.
+
 Still to come: `ops.transfer_request` with the client's request ID as its
 primary key, and the stored response a replay returns (LL-007); the keys for
 each money path as it arrives: salary credits and payments out (LL-007),

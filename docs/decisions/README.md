@@ -9,6 +9,7 @@ made after the blueprint start at ADR-020.
 
 | ADR | Decision | Status |
 | --- | --- | --- |
+| [005](ADR-005-ddd-lite-one-bounded-context.md) | DDD-lite: one bounded context | Accepted |
 | [006](ADR-006-database-enforces-invariants.md) | The database enforces invariants too | Accepted |
 | [007](ADR-007-balances-derived-through-an-indexed-view.md) | Balances derived through an indexed view | Accepted |
 | [008](ADR-008-personal-data-split.md) | Personal-data split, CDC column lists, token swap at extract | Accepted |

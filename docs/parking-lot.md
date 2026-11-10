@@ -7,3 +7,4 @@ equal size leaves.
 | --- | --- | --- |
 | 2026-11-09 | Fabric finish line (LL-016) | Deferred from v1. See ADR-020. |
 | 2026-11-09 | Automated build and test on GitHub | The database tests need a SQL Server to run against. |
+| 2026-11-10 | Compile-time ban on DateTime.Now and double (banned-API analyzer) | Candidate for LL-006 when the TimeProvider clock arrives. |
